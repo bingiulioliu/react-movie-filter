@@ -1,0 +1,28 @@
+/*
+
+CSS Modules — esempio
+=====================
+
+Un file ".module.css" permette di scrivere regole CSS "scoped",
+cioè limitate al componente che lo importa. Vite genera in automatico
+nomi di classe unici (es. `.title` diventa qualcosa come `.title_x3kf2`)
+così due moduli diversi possono avere classi con lo stesso nome senza
+entrare in conflitto fra loro o con stili globali (es. Bootstrap).
+
+Come si usa:
+    1. Si importa il modulo nel componente come un oggetto:
+        import styles from "./HelloClasse154.module.css";
+    2. Si applica una regola con la sintassi `styles.nomeClasse`:
+        <h1 className={styles.title}>...</h1>
+
+La classe `.title` qui sotto è quindi disponibile nel componente
+come `styles.title` e si può combinare con altre classi (anche di
+Bootstrap) usando un template literal:
+<h1 className={`${styles.title} text-primary`}>...</h1>
+*/
+
+.title {
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
