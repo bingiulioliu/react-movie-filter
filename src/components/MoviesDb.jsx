@@ -5,12 +5,44 @@ import { useState } from "react";
 
 function MoviesDb() {
 
+    const [newMovie, setNewMovie] = useState('');
+    const [movieList, setMovieList] = useState(movies);
+    const [search, setSearch] = useState('');
+    const [selectedGenre, setSelectedGenre] = useState('')
+    const [movieListFiltered, setMovieListFiltered] = useState(movieList);
+
     const allGenres = movies.map(movie => movie.genre);
     // rimuovo i doppioni
     const generiSet = new Set(allGenres);
     // trasformo in un array
     const moviesGenres = Array.from(generiSet);
-    console.log(moviesGenres);
+
+    useEffect(() => {
+        console.log('setup function: ' + search);
+
+        const movieFiltered = movieList.filter(movie => {
+            // Filtro per Titolo
+            const matchesTitle = movie.title.toLowerCase().includes(search.toLowerCase());
+            
+            // Filtro per Genere (se vuoto mostra tutto, altrimenti confronta)
+            const matchesGenre = selectedGenre === "" || movie.genre === selectedGenre;
+
+            return matchesTitle && matchesGenre;
+        });
+
+        setMovieListFiltered(movieFiltered);
+
+    }, [search, movieList, selectedGenre]);
+
+    const changeInputHandler = (event) => {
+        const {name, value} = event.target;
+
+        if (name === 'search') {
+            setSearch(value);
+        } else if (name === 'genre') {
+            setSelectedGenre(value);
+        }
+    };
 
 
 
@@ -22,14 +54,17 @@ function MoviesDb() {
             {/* Form di filtraggio */}
             <div>
                 <h2>Filtra Film</h2>
-                {/*
-                <input type="text" value={search} onChange={changeInputHandler} name="search" />
+                <input 
+                type="text" 
+                value={search} 
+                onChange={changeInputHandler}
+                name = "search"/>
                 <select name="search" onChange={changeInputHandler}>
                     <option value={moviesGenres}></option>
-                </select> */}
+                </select>
                 <h2>Lista Film</h2>
                 <ul>
-                    {movies.map(({title, genre}, index) => {
+                    {movieListFiltered.map(({ title, genre }, index) => {
                         return <li key={index}>Titolo: {title} - Genere: {genre}</li>
                     })}
                 </ul>
