@@ -4,22 +4,24 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 function MoviesDb() {
+    // Definizioni stati
+    const [newMovie, setNewMovie] = useState(''); // Stato per nuovo film inserito
+    const [movieList, setMovieList] = useState(movies); // DB
+    const [search, setSearch] = useState(''); // testo inserito nel input
+    const [selectedGenre, setSelectedGenre] = useState('') // genere selezionato
+    const [movieListFiltered, setMovieListFiltered] = useState(movieList); // lista filtrata montata
 
-    const [newMovie, setNewMovie] = useState('');
-    const [movieList, setMovieList] = useState(movies);
-    const [search, setSearch] = useState('');
-    const [selectedGenre, setSelectedGenre] = useState('')
-    const [movieListFiltered, setMovieListFiltered] = useState(movieList);
-
+    // Estrazione generi
     const allGenres = movies.map(movie => movie.genre);
     // rimuovo i doppioni
     const generiSet = new Set(allGenres);
     // trasformo in un array
     const moviesGenres = Array.from(generiSet);
 
+    // Filtraggio
     useEffect(() => {
         console.log('setup function: ' + search);
-
+        // Funzione che parte ad ogni modifica delle dipendenze
         const movieFiltered = movieList.filter(movie => {
             // Filtro per Titolo
             const matchesTitle = movie.title.toLowerCase().includes(search.toLowerCase());
@@ -29,13 +31,14 @@ function MoviesDb() {
 
             return matchesTitle && matchesGenre;
         });
-
+        // Aggiorna la lista visualizzata
         setMovieListFiltered(movieFiltered);
 
+        // Dipendenze: l'effect parte ogni volta che una di queste cambia
     }, [search, movieList, selectedGenre]);
 
     const changeInputHandler = (event) => {
-        const {name, value} = event.target;
+        const {name, value} = event.target; // destructuring dell'input
 
         if (name === 'search') {
             setSearch(value);
