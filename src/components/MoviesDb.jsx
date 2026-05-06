@@ -59,8 +59,15 @@ function MoviesDb() {
                 value={search} 
                 onChange={changeInputHandler}
                 name = "search"/>
-                <select name="search" onChange={changeInputHandler}>
-                    <option value={moviesGenres}></option>
+                <select 
+                name="genre" 
+                value={selectedGenre}
+                onChange={changeInputHandler}>
+                    <option value=''>Seleziona il genere</option>
+                    {moviesGenres.map((genre) => (
+                        <option key={genre} value={genre}>{genre}
+                    </option>
+                    ))}
                 </select>
                 <h2>Lista Film</h2>
                 <ul>
